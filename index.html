@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+        <!--<script src="https://img.hcharts.cn/highcharts/modules/series-label.js"></script>-->
+        <script src="https://img.hcharts.cn/highcharts/modules/oldie.js"></script>
+        <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+    </head>
+    <body>
+        <div id="container" style="max-width:800px;height:400px"></div>
+        <script>
+            var chart = Highcharts.chart('container', {
+	            	chart: {
+		            type: 'line'
+		        },
+			    title: {
+			        text: ''
+			    },
+			    subtitle: {
+			        text: ''
+			    },
+			    xAxis: {
+	                labels: {
+		                enabled: false
+		            },
+		            type: 'datetime',
+		            visible:false
+	            },
+			    yAxis: {
+			        title: {
+			            text: ''
+			        },
+			        labels: {
+		                enabled: false
+		            }
+			    },
+			    legend: {
+			        layout: 'vertical',
+			        align: 'right',
+			        verticalAlign: 'middle',
+			        width:0,
+			        enabled: false 
+			    },
+			    navigation:{
+			    		buttonOptions:{
+			    			enabled:false
+			    		}
+			    },
+			    credits:{
+			    		enabled:false
+			    },
+			    tooltip:{
+			    		backgroundColor:'#FFFFFF',
+			    		borderColor:'#cccccc',
+			    		shared: true,
+			        useHTML: true,
+			        formatter:function() {
+			        		var points = this.points;
+			        		var _time = this.x;
+			        		//时间格式化
+					    _time = new Date(_time);
+					    var year = _time.getFullYear();
+					    var month = _time.getMonth()+1;
+					    var date = _time.getDate();
+					    year = year.toString().substr(2,2);
+					    
+					    var str_time = [date,month,year].join('/');
+			        		
+			        		var header = '<b style="margin:10px 0;display:block;font-weight:700">'+ str_time +'</b><table>';
+			        		var body   = '';
+			        		var footer = '</table>';
+			        		for(var i=0;i<points.length;i++){
+			        			var _color = points[i].series.color;
+			        			var _y     = points[i].y;
+			        			var _name  = points[i].series.name;
+			        			if(points[i].series.name == "CTR"){
+				        			body+= '<tr><td style="width:30px;height:1px;background:'+ _color +';display:inline-block;margin-right:10px"></td><td style="color:'+ _color +'">'+ _name +': </td><td style="text-align: left"><b id="point_name">'+ _y +'%</b></td></tr>';
+				        		} else {
+				        			body+= '<tr><td style="width:30px;height:1px;background:'+ _color +';display:inline-block;margin-right:10px"></td><td style="color:'+ _color +'">'+ _name +': </td><td style="text-align: left"><b id="point_name">'+ _y +'</b></td></tr>';
+				        		}
+			        		}
+			        		return  header+body+footer;
+			        },
+			        xDateFormat: '%d/%m/%Y',
+			    },
+			    plotOptions: {
+			        series: {
+			            label: {
+			                connectorAllowed: false
+			            },
+			            marker:{
+				        		enabled:false,
+				        		symbol:'circle',
+							radius:5,
+				        },
+				        negativeColor:'#fff',
+			            allowPointSelect:false,
+			            cursor: 'pointer',
+			            states:{
+			            		hover:{
+			            			halo:'false'
+			            		}
+			            },
+			            pointStart: Date.UTC(2017, 0, 1),
+                			pointInterval: 24 * 3600 * 1000,
+			        }
+			    },
+			    series: [{
+			        name: 'Clicks',
+			        data: [13, 22, 27, 21, 22, 35, 41, 41,21],
+			        color:'#4d90fe',
+			    }, {
+			        name: 'Impressions',
+			        data: [24, 24, 29, 20, 32, 30, 38, 40,32],
+			        color:'#dd4b39'
+			    }, {
+			        name: 'CTR',
+			        data: [11.23, 17.34, 16.12, 19.43, 20.54, 24.65, 28.34, 30.32,42.54],
+			        color:'#ff9900'
+			    }, {
+			        name: 'Position',
+			        data: [29, 31, 39, 12, 15, 22, 34, 39,28],
+			        color:'#109618'
+			    }],
+			    responsive: {
+			        rules: [{
+			            condition: {
+			                maxWidth: 500
+			            },
+			            chartOptions: {
+			                legend: {
+			                    layout: 'horizontal',
+			                    align: 'center',
+			                    verticalAlign: 'bottom'
+			                }
+			            }
+			        }]
+			    }
+			});
+            
+        </script>
+    </body>
+</html>
+​
